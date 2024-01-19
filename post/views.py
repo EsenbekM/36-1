@@ -20,10 +20,15 @@ status code - код состояния, который будет возвра�
 500 - Internal Server Error.
 
 render - функция, которая отображает шаблон и возвращает ответ.
+
+QuerySet - набор объектов, полученных в результате запроса к базе данных.
+
 '''
 
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from post.models import Post
 
 
 def hello_view(request):
@@ -34,3 +39,33 @@ def hello_view(request):
 def main_page_view(request):
     if request.method == 'GET':
         return render(request, 'index.html')
+
+
+def post_list_view(request):
+    if request.method == 'GET':
+        posts = Post.objects.all() # QuerySet
+
+        context = {'posts': posts}
+
+        return render(
+            request, 
+            'post/list.html',
+            context=context
+            )
+    
+
+def post_detail_view(request, post_id):
+    if request.method == 'GET':
+        try:
+            post = Post.objects.get(id=post_id) # Post
+        except Post.DoesNotExist:
+            return render(
+                request,
+                'errors/404.html',
+            )
+
+        return render(
+            request,
+            'post/detail.html',
+            context={'post': post}
+        )

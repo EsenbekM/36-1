@@ -3,6 +3,8 @@
 # Виртуальное окружение Python
 venv/
 
+post_photos
+
 # Файлы миграции базы данных
 */migrations/0*.py
 
