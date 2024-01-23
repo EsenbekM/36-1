@@ -28,7 +28,7 @@ QuerySet - набор объектов, полученных в результа
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from post.models import Post
+from post.models import HashTag, Post, Comment
 
 
 def hello_view(request):
@@ -43,10 +43,13 @@ def main_page_view(request):
 
 def post_list_view(request):
     if request.method == 'GET':
+        # 1 - получить все посты
         posts = Post.objects.all() # QuerySet
 
+        # 2 - передать их в шаблон
         context = {'posts': posts}
 
+        # 3 - отобразить шаблон
         return render(
             request, 
             'post/list.html',
@@ -68,4 +71,18 @@ def post_detail_view(request, post_id):
             request,
             'post/detail.html',
             context={'post': post}
+        )
+
+# comment.post - объект поста
+# post.comments - QuerySet всех комментариев поста
+
+
+def hashtags_list_view(request):
+    if request.method == 'GET':
+        hashtags = HashTag.objects.all()
+
+        return render(
+            request,
+            'hashtags/list.html',
+            {"hashtags": hashtags}
         )

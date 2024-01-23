@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+<h1>Hash Tags list</h1>
+
+{% for hashtag in hashtags %}
+    <a href="#">
+        #{{ hashtag.title }}
+    </a>
+{% endfor %}
+
+{% endblock %}

@@ -11,6 +11,11 @@
     <div class="card-body">
       <h5 class="card-title">{{ post.title }} {{ post.rate }}</h5>
       <p class="card-text">{{ post.created_at }}</p>
+      {% for hashtag in post.hashtags.all %}
+        <a href="#">
+          <span class="btn btn-secondary">#{{ hashtag.title }}</span>
+        </a>
+      {% endfor %}
       <a href="{{ post.id }}/" class="btn btn-primary">Перейти</a>
     </div>
   </div>

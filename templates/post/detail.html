@@ -7,4 +7,32 @@
     {{ post.title }}
 </h1>
 
+<p>
+    {{ post.content }}
+</p>
+
+<p>
+    {{ post.created_at }}
+</p>
+
+<h1>Comments:</h1>
+
+{% for comment in post.comments.all %}
+    <p>
+        {{ comment.text }}
+    </p>
+    <p>
+        {{ comment.created_at }}
+    </p>
+{% endfor %}
+
+
+<h1>HashTags:</h1>
+
+{% for hashtag in post.hashtags.all %}
+    <p>
+        {{ hashtag.title }}
+    </p>
+{% endfor %}
+
 {% endblock %}
