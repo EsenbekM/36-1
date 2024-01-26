@@ -21,10 +21,9 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True) # DateTimeField - поле для ввода даты и времени
     updated_at = models.DateTimeField(auto_now=True) # auto_now - поле, которое автоматически обновляется при каждом сохранении модели
     hashtags = models.ManyToManyField(
-        HashTag, 
+        HashTag,
         related_name="posts"
     ) # ManyToManyField - поле для связи с другой моделью
-
 
     def __str__(self):
         return f'{self.id} - {self.title}'
@@ -39,7 +38,9 @@ class Comment(models.Model):
     post = models.ForeignKey(
         "post.Post",
         on_delete=models.CASCADE,
-        related_name="comments" # related_name - имя, по которому можно получить все комментарии поста
+        related_name="comments" 
+        # related_name - имя, по которому можно получить все комментарии поста
+        # default: comments_set
     )
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -47,3 +48,12 @@ class Comment(models.Model):
     def __str__(self):
         return f'{self.id} - {self.text[:20]}'
 
+
+# class PostInfo(models.Model):
+#     post = models.OneToOneField(
+#         Post,
+#         on_delete=models.CASCADE,
+#         related_name="info"
+#     )
+    
+# /media/post_photos/2024/01/19/1910781_b53df.png
