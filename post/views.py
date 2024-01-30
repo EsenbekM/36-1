@@ -22,13 +22,13 @@ status code - код состояния, который будет возвра�
 render - функция, которая отображает шаблон и возвращает ответ.
 
 QuerySet - набор объектов, полученных в результате запроса к базе данных.
-
 '''
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from post.models import HashTag, Post, Comment
+from post.forms import PostCreateForm, PostCreateForm2, CommentCreateForm
 
 
 def hello_view(request):
@@ -55,10 +55,11 @@ def post_list_view(request):
             'post/list.html',
             context=context
             )
-    
+
 
 def post_detail_view(request, post_id):
     if request.method == 'GET':
+        form = CommentCreateForm()
         try:
             post = Post.objects.get(id=post_id) # Post
         except Post.DoesNotExist:
@@ -70,12 +71,22 @@ def post_detail_view(request, post_id):
         return render(
             request,
             'post/detail.html',
-            context={'post': post}
+            context={'post': post, 'comment_form': form}
         )
+    
+def comment_create_view(request, post_id):
+    if request.method == 'POST':
+        form = CommentCreateForm(request.POST)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post_id = post_id
+            comment.save()
+
+        return redirect('post_detail', post_id=post_id)
 
 # comment.post - объект поста
 # post.comments - QuerySet всех комментариев поста
-
 
 def hashtags_list_view(request):
     if request.method == 'GET':
@@ -85,4 +96,35 @@ def hashtags_list_view(request):
             request,
             'hashtags/list.html',
             {"hashtags": hashtags}
+        )
+    
+
+def post_create_view(request):
+    if request.method == 'GET':
+        context = {
+            'form': PostCreateForm2()
+        }
+
+        return render(
+            request,
+            'post/create.html',
+            context=context
+        )
+
+    elif request.method == 'POST':
+        form = PostCreateForm2(request.POST, request.FILES)
+
+        if form.is_valid():
+            # Post.objects.create(**form.cleaned_data)
+            form.save()
+            return redirect('posts_list')
+
+        context = {
+            'form': form
+        }
+
+        return render(
+            request,
+            'post/create.html',
+            context=context
         )
