@@ -27,6 +27,7 @@ INSTALLED_APPS = [
 
     # my apps
     'post',
+    'user',
 
     # third-party apps
 ]
@@ -269,3 +270,10 @@ JAZZMIN_SETTINGS = {
 #         "success": "btn-success"
 #     }
 # }
+
+EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST="smtp.gmail.com"
+EMAIL_HOST_USER="esenbekm03@gmail.com"
+EMAIL_HOST_PASSWORD=""
+EMAIL_PORT=587
+EMAIL_USE_TLS=True

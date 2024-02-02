@@ -10,12 +10,12 @@ from post.models import Post, Comment, HashTag
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["id", "title", "rate", "created_at", "updated_at"]
+    list_display = ["id", "user", "title", "rate", "created_at", "updated_at"]
     list_display_links = ["id", "title"]
     search_fields = ["title", "content"]
     list_filter = ["created_at", "updated_at"]
     list_editable = ["rate"]
-    fields = ["id", "title", "content", "photo", "hashtags", "rate", "created_at", "updated_at"]
+    fields = ["id", "user",  "title", "content", "photo", "hashtags", "rate", "created_at", "updated_at"]
     readonly_fields = ["id", "created_at", "updated_at"]
 
     # def get_readonly_fields(self, request, obj=None):

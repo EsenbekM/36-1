@@ -13,6 +13,12 @@ class HashTag(models.Model):
 
 
 class Post(models.Model):
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE,
+        related_name="posts",
+        null=True
+    )
     photo = models.ImageField(upload_to="post_photos/%Y/%m/%d", null=True,
                               verbose_name="Фото") # ImageField - поле для загрузки изображения
     title = models.CharField(max_length=100, verbose_name="Название") # CharField - поле для ввода текста с ограничением по количеству символов
@@ -35,6 +41,12 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE,
+        related_name="comments",
+        null=True
+    )
     post = models.ForeignKey(
         "post.Post",
         on_delete=models.CASCADE,

@@ -26,6 +26,7 @@ QuerySet - набор объектов, полученных в результа
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 from post.models import HashTag, Post, Comment
 from post.forms import PostCreateForm, PostCreateForm2, CommentCreateForm
@@ -43,6 +44,7 @@ def main_page_view(request):
 
 def post_list_view(request):
     if request.method == 'GET':
+        print(request.user)
         # 1 - получить все посты
         posts = Post.objects.all() # QuerySet
 
@@ -74,6 +76,7 @@ def post_detail_view(request, post_id):
             context={'post': post, 'comment_form': form}
         )
     
+@login_required
 def comment_create_view(request, post_id):
     if request.method == 'POST':
         form = CommentCreateForm(request.POST)
@@ -81,6 +84,7 @@ def comment_create_view(request, post_id):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post_id = post_id
+            comment.user = request.user
             comment.save()
 
         return redirect('post_detail', post_id=post_id)
@@ -97,8 +101,9 @@ def hashtags_list_view(request):
             'hashtags/list.html',
             {"hashtags": hashtags}
         )
-    
 
+
+@login_required
 def post_create_view(request):
     if request.method == 'GET':
         context = {

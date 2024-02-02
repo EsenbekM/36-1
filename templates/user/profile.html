@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <img src="{{ user.profile.avatar.url }}" width="300">
+            <h1>{{ user.username }}</h1>
+            <p>{{ user.first_name }}</p>
+            <p>{{ user.last_name }}</p>
+            <p>{{ user.email }}</p>
+            <p>{{ user.profile.bio }}</p>
+            <p>{{ user.date_joined }}</p>
+
+            <a class="nav-link" href="/logout/">Logout</a>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

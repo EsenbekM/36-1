@@ -24,15 +24,20 @@
         {{ comment.text }}
     </p>
     <p>
+        {{ comment.user.username }}
+    </p>
+    <p>
         {{ comment.created_at }}
     </p>
 {% endfor %}
 
-<form action="/posts/{{ post.id }}/comment/" method="post">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <input type="submit" value="Create">
-</form>
+{% if user.is_authenticated %}
+    <form action="/posts/{{ post.id }}/comment/" method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <input type="submit" value="Create">
+    </form>
+{% endif %}
 
 <h1>HashTags:</h1>
 
