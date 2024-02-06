@@ -37,3 +37,12 @@ class LoginForm(forms.Form):
 
 class VeryfyForm(forms.Form):
     code = forms.CharField(max_length=5, required=True)
+
+
+class ProfileForm(forms.Form): # User, Profile
+    username = forms.CharField(max_length=50, required=True)
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=50, required=False)
+    last_name = forms.CharField(max_length=50, required=False)
+    avatar = forms.ImageField(required=False)
+    bio = forms.CharField(max_length=500, required=False, widget=forms.Textarea)

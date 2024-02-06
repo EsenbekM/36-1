@@ -17,6 +17,10 @@
     {{ post.created_at }}
 </p>
 
+{% if has_change_permission %}
+    <a href="/posts/{{ post.id }}/update/">Update</a>
+{% endif %}
+
 <h1>Comments:</h1>
 
 {% for comment in post.comments.all %}

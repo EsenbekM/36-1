@@ -3,8 +3,9 @@ import random
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
-from user.forms import RegisterForm, LoginForm, VeryfyForm
+from user.forms import RegisterForm, LoginForm, VeryfyForm, ProfileForm
 from user.models import Profile, SMSCodes
 
 
@@ -86,6 +87,40 @@ def login_view(request):
 def profile_view(request):
     return render(request, 'user/profile.html')
 
+
+@login_required
+def profile_update_view(request):
+    if request.method == 'GET':
+        profile = Profile.objects.get(user=request.user)
+        form = ProfileForm(
+            initial={
+                'username': request.user.username,
+                'email': request.user.email,
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'avatar': profile.avatar,
+                'bio': profile.bio,
+            }
+        )
+
+        return render(request, 'user/profile_update.html', {'form': form})
+    elif request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            request.user.username = form.cleaned_data['username']
+            request.user.email = form.cleaned_data['email']
+            request.user.first_name = form.cleaned_data['first_name']
+            request.user.last_name = form.cleaned_data['last_name']
+            request.user.save()
+
+            profile = Profile.objects.get(user=request.user)
+            profile.avatar = form.cleaned_data['avatar']
+            profile.bio = form.cleaned_data['bio']
+            profile.save()
+
+            return redirect('profile')
+        else:
+            return render(request, 'user/profile_update.html', {'form': form})
 
 def logout_view(request):
     logout(request)

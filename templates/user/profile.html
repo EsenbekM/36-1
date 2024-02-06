@@ -15,10 +15,27 @@
             <p>{{ user.date_joined }}</p>
 
             <a class="nav-link" href="/logout/">Logout</a>
+            <a href="/profile/update/">Update</a>
         </div>
     </div>
 </div>
 
 
+{% for post in user.posts.all %}
+
+<div class="card" style="width: 18rem;">
+    <img src="/media/{{ post.photo }}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ post.title }} {{ post.rate }}</h5>
+      <p class="card-text">{{ post.created_at }}</p>
+      {% for hashtag in post.hashtags.all %}
+        <a href="#">
+          <span class="btn btn-secondary">#{{ hashtag.title }}</span>
+        </a>
+      {% endfor %}
+      <a href="/posts/{{ post.id }}/" class="btn btn-primary">Перейти</a>
+    </div>
+  </div>
+{% endfor %}
 
 {% endblock %}

@@ -5,6 +5,28 @@
 
 <h1>Post list</h1>
 
+{% for hashtag in hashtags %}
+  <a href="?hashtag={{ hashtag.id }}">
+    <span class="btn btn-secondary">#{{ hashtag.title }}</span>
+  </a>
+{% endfor %}
+
+<h1>
+  Search
+</h1>
+
+<p>
+  <a href="?sort=created_at">Sort by created_at</a>
+  <a href="?sort=-created_at">Sort by created_at desc</a>
+  <a href="?sort=rate">Sort by rate</a>
+  <a href="?sort=-rate">Sort by rate desc</a>
+</p>
+
+<form action="" method="get">
+  <input type="text" name="search">
+  <input type="submit" value="Search">
+</form>
+
 {% for post in posts %}
   <div class="card" style="width: 18rem;">
     <img src="/media/{{ post.photo }}" class="card-img-top" alt="...">
@@ -21,4 +43,12 @@
   </div>
 {% endfor %}
 
+
+<div style="margin-top: auto;">
+  {% for page in max_pages %}
+      <a href="?page={{ page }}" method="GET"><h1>{{ page }}</h1></a>
+  {% endfor %}
+</div>
+
 {% endblock %}
+
